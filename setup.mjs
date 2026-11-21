@@ -58,8 +58,10 @@ try {
   if (desktop) installDesktopCredential();
   const optionText = magpie(["plugin", "options", plugin]).trim();
   const options = optionText.startsWith("{") ? JSON.parse(optionText) : {};
-  options.sessionProof = randomBytes(32).toString("hex");
-  magpie(["plugin", "options", plugin, JSON.stringify(options)]);
+  if (!/^[a-f0-9]{64}$/.test(options.sessionProof || "") || process.env.MAGPIE_API_KEYS_ROTATE === "1") {
+    options.sessionProof = randomBytes(32).toString("hex");
+    magpie(["plugin", "options", plugin, JSON.stringify(options)]);
+  }
   console.log("Setup complete. Reopen Magpie and select the API Keys sidebar page.");
 } catch (error) {
   console.error(error.message);

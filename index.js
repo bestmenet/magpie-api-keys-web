@@ -180,7 +180,9 @@ export default async function apiKeys({ directory }, options = {}) {
   const upstreamKey = desktop ? local?.key : process.env.MAGPIE_WEB_KEY;
   const address = desktop ? local?.address : webAddress();
 
-  Bun.serve({
+  if (!expected) return {};
+
+  const serverOptions = {
     hostname: "127.0.0.1",
     port,
     maxRequestBodySize: 48 * 1024,
@@ -210,7 +212,6 @@ export default async function apiKeys({ directory }, options = {}) {
       if (req.method !== "POST" || !req.headers.get("content-type")?.startsWith("application/json")) {
         return json({ error: "请求格式不正确。" }, 405);
       }
-      if (!expected) return json({ error: "请按 README 完成一次性初始化。" }, 503);
       const auth = req.headers.get("authorization") || "";
       if (auth.length > 4096 || !auth.startsWith("Bearer ") ||
           !timingSafeEqual(expected, digest(auth.slice(7)))) {
@@ -261,6 +262,15 @@ export default async function apiKeys({ directory }, options = {}) {
         return json({ error: "无法确认 Magpie 操作结果，请刷新列表后检查。" }, 502);
       }
     },
-  });
-  return {};
+  };
+  // A retiring Magpie plugin host can still own the listener for a moment.
+  for (let attempt = 0; ; attempt++) {
+    try {
+      Bun.serve(serverOptions);
+      return {};
+    } catch (error) {
+      if (error.code !== "EADDRINUSE" || attempt === 11) throw error;
+      await Bun.sleep(250);
+    }
+  }
 }
