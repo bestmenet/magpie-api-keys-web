@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Key 管理</title>
+<!--STYLE-->
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <div><h1>API Key 管理</h1><p>按平台创建网关密钥，管理访问权限和使用额度。</p></div>
+    <div class="actions">
+      <button id="refresh" type="button" hidden>刷新列表</button>
+
+    </div>
+  </header>
+
+  <dl class="overview" aria-label="密钥总览">
+    <div><dt>密钥总数</dt><dd id="total">—</dd></div>
+    <div><dt>已启用</dt><dd id="active">—</dd></div>
+    <div><dt>已停用或过期</dt><dd id="inactive">—</dd></div>
+  </dl>
+
+  <section class="panel create" aria-labelledby="create-title">
+    <h2 id="create-title">创建 API Key</h2>
+    <div class="create-fields">
+      <div><label for="new-name">新 API Key 名称</label>
+        <input id="new-name" placeholder="例如 Cherry Studio" autocomplete="off" required aria-describedby="name-help">
+      </div>
+      <div><label for="new-access">访问类型</label>
+        <select id="new-access"><option value="full">模型调用</option><option value="readonly">仅查看统计</option></select>
+      </div>
+      <button id="create-button" class="primary" type="button" disabled>创建密钥</button>
+    </div>
+    <p id="name-help" class="hint">用平台名或用途命名，密钥由 Magpie 自动生成。</p>
+  </section>
+
+  <section class="panel directory" aria-labelledby="keys-title">
+    <header class="section-header">
+      <div><h2 id="keys-title">已有密钥</h2><p id="directory-note">正在连接 Magpie 管理接口…</p></div>
+      <div class="actions">
+        <input id="search" type="search" aria-label="搜索名称或密钥尾号" placeholder="搜索名称或尾号" disabled>
+        <select id="filter" aria-label="按状态筛选" disabled>
+          <option value="">全部状态</option><option value="on">已启用</option>
+          <option value="off">已停用</option><option value="expired">已过期</option>
+        </select>
+      </div>
+    </header>
+    <div id="key-table" hidden>
+      <div class="table-scroll" role="region" tabindex="0" aria-labelledby="keys-title">
+        <table aria-label="网关密钥">
+          <thead><tr><th scope="col">名称与密钥</th><th scope="col">状态</th><th scope="col">权限与额度</th><th scope="col">操作</th></tr></thead>
+          <tbody id="keys"></tbody>
+        </table>
+      </div>
+      <p id="empty" class="empty" hidden></p>
+    </div>
+    <div id="locked" class="empty">
+      <button id="show-keys" type="button">重试连接</button>
+    </div>
+  </section>
+  <p id="status" role="status"></p>
+</main>
+
+<dialog id="edit" aria-labelledby="edit-title">
+  <h2 id="edit-title"></h2>
+  <p id="edit-details" hidden></p>
+  <label id="rename-group" hidden>新名称 <input id="rename-value" autocomplete="off"></label>
+  <p id="edit-status" class="problem" role="status"></p>
+  <div class="actions footer">
+    <button id="cancel" type="button">取消</button>
+    <button id="confirm" value="confirm" type="button">确认</button>
+  </div>
+</dialog>
+
+<dialog id="secret-dialog" aria-labelledby="secret-title">
+  <h2 id="secret-title">网关密钥</h2>
+  <p>将完整值填到对应平台的 API Key 栏。</p>
+  <input id="secret" aria-label="完整网关密钥" readonly autocomplete="off" spellcheck="false">
+  <div class="actions footer">
+    <button id="close-secret" type="button">关闭</button>
+    <button id="copy-value" class="primary" type="button" command="--copy" commandfor="secret">复制密钥</button>
+  </div>
+  <p id="copy-status" role="status"></p>
+</dialog>
+
+<dialog id="detail" class="wide-dialog" aria-labelledby="detail-title">
+  <h2 id="detail-title"></h2>
+  <p id="detail-meta"></p>
+  <div class="detail-section">
+    <h3>访问策略</h3>
+    <div id="policies" class="policy-list"></div>
+  </div>
+  <div class="detail-section">
+    <div class="section-header"><h3>额度与用量</h3><button id="add-limit" type="button">添加额度</button></div>
+    <div id="budgets" class="policy-list"></div>
+    <p class="hint">用量随额度周期统计，费用为 Magpie 估算。</p>
+  </div>
+  <div class="detail-section">
+    <h3>密钥操作</h3><div id="detail-actions" class="actions"></div>
+  </div>
+  <div class="actions footer"><button id="detail-close" type="button">关闭</button></div>
+</dialog>
+
+<dialog id="policy" class="wide-dialog" aria-labelledby="policy-title">
+  <h2 id="policy-title"></h2>
+  <div id="policy-fields"></div>
+  <p id="policy-status" class="problem" role="status"></p>
+  <div class="actions footer">
+    <button id="policy-cancel" type="button">返回</button>
+    <button id="policy-save" class="primary" type="button">保存</button>
+  </div>
+</dialog>
+<!--SCRIPT-->
+</body>
+</html>

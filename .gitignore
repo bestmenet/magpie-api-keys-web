@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/
+*.tgz
+*.log
+.env
+.env.*
+api-key-manager-desktop.json

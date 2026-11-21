@@ -1,0 +1,106 @@
+:root {
+  color-scheme: light dark;
+  font: 14px/1.55 system-ui, sans-serif;
+  --ink: light-dark(#182434, #e8eef7);
+  --muted: light-dark(#586779, #a9b7ca);
+  --line: light-dark(#dbe2eb, #394457);
+  --surface: light-dark(#fff, #202735);
+  --subtle: light-dark(#f4f7fb, #242e41);
+  --accent: light-dark(#2856c4, #a9beff);
+  --on-accent: light-dark(#fff, #18243e);
+  --danger: light-dark(#a52930, #ffaaaa);
+  --good: light-dark(#1d6347, #a9e4c7);
+  --good-bg: light-dark(#e8f4ed, #233b36);
+  color: var(--ink);
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; }
+main { max-inline-size: 77rem; margin-inline: auto; padding: clamp(1rem, 4vw, 2.5rem); }
+h1, h2, h3, p, dl, dd { margin: 0; }
+h1 { font-size: clamp(1.6rem, 3.4vw, 2.1rem); letter-spacing: -.03em; }
+h2 { font-size: 1.12rem; }
+h3 { font-size: 1rem; }
+header p, .hint, .meta, dialog p { color: var(--muted); }
+.page-header, .section-header, .policy-row {
+  display: flex; justify-content: space-between; align-items: center; gap: .75rem; flex-wrap: wrap;
+}
+.page-header { margin-block-end: 1.3rem; }
+.overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.45rem, 1.5vw, .85rem); margin-block-end: 1rem; }
+.overview div, .panel { background: var(--surface); border: 1px solid var(--line); border-radius: .7rem; }
+.overview div { padding: .8rem clamp(.55rem, 2vw, 1.05rem); }
+.overview dt { color: var(--muted); }
+.overview dd { font-size: 1.48rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.panel + .panel { margin-block-start: 1rem; }
+.create, .section-header, .empty { padding: clamp(.85rem, 2vw, 1.2rem); }
+.create-fields { display: grid; grid-template-columns: minmax(10rem, 2fr) minmax(9rem, 1fr) auto; align-items: end; gap: .7rem; margin-block: .8rem .45rem; }
+label { display: block; font-weight: 600; }
+label + input, label + select, label + textarea, label > input:not([type=checkbox]) { margin-block-start: .24rem; }
+input, select, textarea, button {
+  font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line);
+  border-radius: .42rem; min-block-size: 2.35rem; padding: .35rem .68rem;
+}
+input, select, textarea { min-inline-size: 0; }
+.create input, .create select, dialog input:not([type=checkbox]), dialog textarea, dialog select { inline-size: 100%; }
+textarea { resize: vertical; min-block-size: 6rem; }
+button { min-inline-size: 2rem; white-space: nowrap; cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled, input:disabled, select:disabled { opacity: .6; cursor: default; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 650; }
+.danger, .problem, #status[data-error] { color: var(--danger); }
+.actions { display: flex; align-items: center; flex-wrap: wrap; gap: .45rem; }
+.hint, .meta { font-size: .88rem; }
+.meta { display: block; overflow-wrap: anywhere; font-weight: 400; }
+code, #secret, textarea { font-family: ui-monospace, monospace; }
+.directory .section-header .actions {
+  display: grid; grid-template-columns: minmax(8rem, 14rem) auto;
+  inline-size: min(22rem, 100%);
+}
+.directory input { inline-size: 100%; }
+.empty { border-block-start: 1px solid var(--line); color: var(--muted); }
+.table-scroll { overflow: auto; container-type: inline-size; }
+table { border-collapse: separate; border-spacing: 0; text-align: start; inline-size: 100%; }
+thead { position: sticky; inset-block-start: 0; z-index: 1; }
+th, td { text-align: start; padding: .75rem .85rem; border-block-start: 1px solid var(--line); vertical-align: middle; }
+thead th { background: var(--subtle); font-weight: 600; }
+tbody th { position: sticky; inset-inline-start: 0; background: var(--surface); overflow-wrap: anywhere; }
+tbody th .meta { margin-block-start: .18rem; }
+.pill { display: inline-block; padding: .15rem .5rem; border-radius: .4rem; background: var(--subtle); color: var(--muted); white-space: nowrap; }
+.pill[data-state=on] { color: var(--good); background: var(--good-bg); }
+#status { margin-block-start: .75rem; min-block-size: 1.5em; }
+dialog {
+  inline-size: min(29rem, calc(100% - 1.4rem)); max-block-size: 90%; padding: 1.25rem;
+  color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: .75rem;
+}
+dialog:modal { overscroll-behavior: contain; }
+dialog::backdrop { background: #101829a3; overflow: hidden; overscroll-behavior: contain; }
+.wide-dialog { inline-size: min(42rem, calc(100% - 1.4rem)); }
+dialog h2 { margin-block-end: .45rem; overflow-wrap: anywhere; }
+dialog .field, dialog input[readonly], .detail-section, #rename-group { margin-block-start: .85rem; }
+.footer { margin-block-start: .9rem; justify-content: flex-end; }
+.problem:empty, #copy-status:empty { display: none; }
+.problem:not(:empty), #copy-status:not(:empty) { margin-block-start: .55rem; }
+.detail-section { border-block-start: 1px solid var(--line); padding-block-start: .85rem; }
+.detail-section h3 { margin-block-end: .4rem; }
+.detail-section .section-header { padding: 0; }
+.policy-row { gap: .35rem .7rem; padding-block: .45rem; }
+.policy-row + .policy-row { border-block-start: 1px solid var(--line); }
+.policy-row p { overflow-wrap: anywhere; }
+.check { display: flex; gap: .4rem; align-items: center; font-weight: 400; }
+.field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr)); gap: .65rem; }
+@container (width < 620px) {
+  table, tbody { display: block; }
+  thead { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }
+  tr { display: grid; grid-template-columns: 1fr auto; padding: .45rem .75rem; border-block-start: 1px solid var(--line); }
+  th, td { padding: .3rem; border: 0; }
+  tbody th { position: static; }
+  td:nth-child(3), td:nth-child(4) { grid-column: 1 / -1; }
+}
+@media (width < 570px) {
+  .create-fields { grid-template-columns: minmax(0, 1fr); }
+  .create-fields button { justify-self: start; }
+  .overview dt { font-size: .85rem; }
+}

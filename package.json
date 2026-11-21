@@ -1,0 +1,36 @@
+{
+  "name": "magpie-api-keys-web",
+  "version": "1.2.0",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "page",
+    "setup.mjs"
+  ],
+  "magpie": {
+    "name": "API Key Manager (Web)",
+    "page": {
+      "title": "API Keys · Web",
+      "titles": {
+        "zh": "API Key 管理 · Web",
+        "zh-CN": "API Key 管理 · Web",
+        "zh-TW": "API Key 管理 · Web"
+      },
+      "file": "page/entry.html",
+      "service": {
+        "port": 45185
+      }
+    },
+    "edition": "web",
+    "summary": {
+      "en": "Manage gateway keys, model access and budgets inside Magpie Web.",
+      "zh": "在 Magpie Web 的侧栏管理网关密钥、模型访问和额度。"
+    }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bestmenet/magpie-api-keys-web.git"
+  }
+}
